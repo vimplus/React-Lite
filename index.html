@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+    <meta charset="UTF-8">
+    <title>React简易版模拟实现</title>
+</head>
+<body>
+    <div id="App"></div>
+    <script>
+        var component = window._react = {
+            DOM: document.getElementById('App'),
+            state: {
+                name: 'txBoy'
+            },
+            setState: function (key, val) {
+                var _this = this;
+                _this.state[key] = val;
+                _this.render()
+            },
+            render: function () {
+                var _this = this;
+                var template = '<div onclick="_react.changeName">Hello {name}!</div>'
+                var html = template.replace(/\{.*\}/g, function (res) {
+                    console.log(res); // {name}
+                    var key = res.substr(1, res.length - 2);  //排除花括号，得到key
+                    return _this.state[key];
+                })
+                _this.DOM.innerHTML = html;
+            },
+            createClass: function () {
+                var _this = this;
+                _this.render();
+                _this.componentDidMount();
+            },
+            componentDidMount: function () {
+                var _this = this;
+                setTimeout(function () {
+                    _this.setState('name', 'vimplus');
+                }, 2000)
+            },
+            changeName: function () {
+                var _this = this;
+                _this.setState('name', '乐潇游');
+            }
+        }
+        
+        component.createClass();
+    </script>
+</body>
+</html>
